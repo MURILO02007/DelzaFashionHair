@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendamento Simples</title>
+  <link rel="icon" href="img/Imagem do WhatsApp de 2025-05-07 à(s) 14.58.20_2e624ae2.jpg" type="image/png" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      padding: 10px;
+      color: #333;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    h1 {
+      color: #853d3e;
+      margin: 8px 0;
+      text-align: center;
+      font-size: 1.3rem;
+      flex-grow: 1;
+    }
+
+    .etapa {
+      background-color: white;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: none;
+    }
+
+    .etapa.ativa {
+      display: block;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 500;
+      margin-top: 8px;
+      border: none;
+      transition: all 0.2s;
+      font-size: 0.85rem;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primario {
+      background-color: #853d3e;
+      color: white;
+    }
+
+    .btn-primario:hover:not(:disabled) {
+      background-color: #6c2526;
+    }
+
+    .btn-secundario {
+      background-color: #f5f5f5;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+
+    .btn-secundario:hover:not(:disabled) {
+      background-color: #e0e0e0;
+    }
+
+    .btn-servico {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 6px;
+      text-align: center;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.85rem;
+    }
+
+    .btn-servico:hover, .btn-servico.selecionado {
+      background-color: #d4a5a6;
+      color: white;
+    }
+
+    .dias-semana {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #853d3e;
+      font-size: 0.75rem;
+    }
+
+    .dias-mes {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+    }
+
+    .dia {
+      padding: 6px 2px;
+      text-align: center;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid #eee;
+      font-size: 0.75rem;
+      min-height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .dia:hover:not(.indisponivel) {
+      background-color: #f0f0f0;
+    }
+
+    .dia.indisponivel {
+      color: #ccc;
+      background-color: #f9f9f9;
+      cursor: not-allowed;
+      font-size: 0.65rem;
+    }
+
+    .dia.selecionado {
+      background-color: #d4a5a6;
+      color: white;
+    }
+
+    .dia.bloqueado-unhas {
+      position: relative;
+    }
+
+    .dia.bloqueado-unhas::after {
+      content: "✖ Unhas";
+      position: absolute;
+      bottom: 2px;
+      font-size: 0.6rem;
+      color: #c62828;
+    }
+
+    .horario-btn {
+      padding: 6px;
+      margin: 3px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      font-size: 0.85rem;
+      width: calc(50% - 6px);
+      display: inline-block;
+    }
+
+    .horario-btn:hover:not(.indisponivel), .horario-btn.selecionado {
+      background-color: #d4a5a6;
+      color: white;
+    }
+
+    .horario-btn.indisponivel {
+      background-color: #f9f9f9;
+      color: #ccc;
+      cursor: not-allowed;
+      text-decoration: line-through;
+      position: relative;
+    }
+
+    .horario-btn.indisponivel::after {
+      content: "⛔";
+      position: absolute;
+      right: 2px;
+      top: 2px;
+      font-size: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 3px;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"] {
+      width: 100%;
+      padding: 7px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+
+    .resumo-item {
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+    }
+
+    .resumo-item strong {
+      display: block;
+      margin-bottom: 3px;
+      color: #853d3e;
+    }
+
+    .aviso {
+      background-color: #fff3e0;
+      color: #e65100;
+      padding: 6px;
+      border-radius: 4px;
+      margin: 10px 0;
+      text-align: center;
+      font-weight: 500;
+      font-size: 0.75rem;
+    }
+
+    .sem-horarios {
+      background-color: #ffebee;
+      color: #c62828;
+      padding: 10px;
+      border-radius: 4px;
+      text-align: center;
+      margin-top: 12px;
+      font-size: 0.85rem;
+    }
+
+    .mes-navegacao {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .mes-navegacao button {
+      margin: 4px 0;
+      padding: 5px 8px;
+      font-size: 0.8rem;
+    }
+
+    #mesAtual {
+      font-weight: 600;
+      color: #853d3e;
+      margin: 4px 0;
+      text-align: center;
+      flex-grow: 1;
+      font-size: 0.8rem;
+    }
+
+    /* Ajustes para telas muito pequenas */
+    @media (max-width: 360px) {
+      .dia {
+        min-height: 28px;
+        font-size: 0.7rem;
+        padding: 4px 1px;
+      }
+      
+      .horario-btn {
+        width: 100%;
+        margin: 2px 0;
+      }
+      
+      .mes-navegacao button {
+        padding: 4px 6px;
+        font-size: 0.75rem;
+      }
+    }
+
+    /* Ajustes para telas médias */
+    @media (min-width: 768px) {
+      .horario-btn {
+        width: calc(33.333% - 6px);
+      }
+      
+      .dia {
+        min-height: 36px;
+        font-size: 0.8rem;
+      }
+    }
+
+    /* Ajustes para telas grandes */
+    @media (min-width: 992px) {
+      .horario-btn {
+        width: calc(25% - 6px);
+      }
+      
+      body {
+        padding: 15px;
+      }
+      
+      .etapa {
+        padding: 15px;
+      }
+      
+      .btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+      }
+      
+      .btn-servico {
+        padding: 12px;
+        font-size: 0.9rem;
+      }
+      
+      .dia {
+        min-height: 40px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <header>
+    <img class="logo" src="img/Imagem do WhatsApp de 2025-05-07 à(s) 14.58.20_2e624ae2.jpg" alt="Logo">
+    <h1>Agendamento Online</h1>
+  </header>
+
+  <!-- Etapa 1: Seleção de Serviço -->
+  <div id="etapaServicos" class="etapa ativa">
+    <h2>Selecione o serviço desejado:</h2>
+    <button class="btn-servico" data-servico="Botox Capilar">Botox Capilar</button>
+    <button class="btn-servico" data-servico="Selante">Selante</button>
+    <button class="btn-servico" data-servico="Progressiva">Progressiva</button>
+    <button class="btn-servico" data-servico="Corte">Corte</button>
+    <button class="btn-servico" data-servico="Unha, Pé e Mão">Unha, Pé e Mão</button>
+    <button class="btn-servico" data-servico="Alisantes">Alisantes</button>
+    <button class="btn-servico" data-servico="Luzes">Luzes</button>
+    <button class="btn-servico" data-servico="Escova">Escova</button>
+    
+    <div class="aviso">
+      ⚠️ ATENÇÃO: Fechado nas terças-feiras
+    </div>
+    
+    <button id="btnAvancarServico" class="btn btn-primario" disabled>Avançar</button>
+  </div>
+
+  <!-- Etapa 2: Seleção de Data -->
+  <div id="etapaData" class="etapa">
+    <h2>Selecione a data:</h2>
+    <div class="mes-navegacao">
+      <button id="btnMesAnterior" class="btn-secundario">&lt; Mês Anterior</button>
+      <div id="mesAtual">Julho 2025</div>
+      <button id="btnProximoMes" class="btn-secundario">Próximo Mês &gt;</button>
+    </div>
+    
+    <div class="dias-semana">
+      <div>Dom</div>
+      <div>Seg</div>
+      <div>Ter</div>
+      <div>Qua</div>
+      <div>Qui</div>
+      <div>Sex</div>
+      <div>Sáb</div>
+    </div>
+    
+    <div class="dias-mes" id="calendario">
+      <!-- Dias serão preenchidos por JavaScript -->
+    </div>
+    
+    <button id="btnVoltarData" class="btn btn-secundario">Voltar</button>
+    <button id="btnAvancarData" class="btn btn-primario" disabled>Avançar</button>
+  </div>
+
+  <!-- Etapa 3: Seleção de Horário -->
+  <div id="etapaHorario" class="etapa">
+    <h2>Selecione o horário:</h2>
+    <div id="horariosDisponiveis">
+      <!-- Horários serão preenchidos por JavaScript -->
+    </div>
+    
+    <button id="btnVoltarHorario" class="btn btn-secundario">Voltar</button>
+    <button id="btnAvancarHorario" class="btn btn-primario" disabled>Avançar</button>
+  </div>
+
+  <!-- Etapa 4: Informações Pessoais -->
+  <div id="etapaInformacoes" class="etapa">
+    <h2>Informe seus dados:</h2>
+    
+    <div class="form-group">
+      <label for="nomeCompleto">Nome Completo:</label>
+      <input type="text" id="nomeCompleto" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="telefone">Telefone:</label>
+      <input type="tel" id="telefone" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="email">E-mail:</label>
+      <input type="email" id="email" required>
+    </div>
+    
+    <button id="btnVoltarInformacoes" class="btn btn-secundario">Voltar</button>
+    <button id="btnConfirmarAgendamento" class="btn btn-primario">Confirmar Agendamento</button>
+  </div>
+
+  <!-- Etapa 5: Resumo do Agendamento -->
+  <div id="etapaResumo" class="etapa">
+    <h2>Confirme seu agendamento:</h2>
+    
+    <div class="resumo-item">
+      <strong>Serviço:</strong>
+      <div id="resumoServico"></div>
+    </div>
+    
+    <div class="resumo-item">
+      <strong>Data:</strong>
+      <div id="resumoData"></div>
+    </div>
+    
+    <div class="resumo-item">
+      <strong>Horário:</strong>
+      <div id="resumoHorario"></div>
+    </div>
+    
+    <div class="resumo-item">
+      <strong>Nome:</strong>
+      <div id="resumoNome"></div>
+    </div>
+    
+    <div class="resumo-item">
+      <strong>Telefone:</strong>
+      <div id="resumoTelefone"></div>
+    </div>
+    
+    <div class="resumo-item">
+      <strong>E-mail:</strong>
+      <div id="resumoEmail"></div>
+    </div>
+    
+    <button id="btnVoltarResumo" class="btn btn-secundario">Voltar</button>
+    <button id="btnFinalizarAgendamento" class="btn btn-primario">Finalizar Agendamento</button>
+  </div>
+
+  <script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwXkEYnYHyP079rCVWDK6EU1ESE1CLekY",
+      authDomain: "banco-de-dados-para-agendas.firebaseapp.com",
+      projectId: "banco-de-dados-para-agendas",
+      storageBucket: "banco-de-dados-para-agendas.appspot.com",
+      messagingSenderId: "777639279776",
+      appId: "1:777639279776:web:06b871fc065e2154569dc5"
+    };
+
+    // Inicializa o Firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    // Variáveis globais
+    const hoje = new Date();
+    let mesAtual = hoje.getMonth();
+    let anoAtual = hoje.getFullYear();
+    let servicoSelecionado = null;
+    let diaSelecionado = null;
+    let horarioSelecionado = null;
+
+    // Serviços que não podem ter agendamentos simultâneos
+    const servicosExclusivos = [
+      "Botox Capilar", "Selante", "Progressiva", "Corte", 
+      "Alisantes", "Luzes", "Escova"
+    ];
+
+    // Horários disponíveis
+    const horariosGerais = ['08:00', '09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00'];
+    const horariosUnhas = ['09:30', '11:00', '14:00', '15:30', '17:00'];
+
+    // Elementos do DOM
+    const etapas = {
+      servicos: document.getElementById('etapaServicos'),
+      data: document.getElementById('etapaData'),
+      horario: document.getElementById('etapaHorario'),
+      informacoes: document.getElementById('etapaInformacoes'),
+      resumo: document.getElementById('etapaResumo')
+    };
+
+    // Função para navegar entre as etapas
+    function navegarPara(etapa) {
+      Object.values(etapas).forEach(e => e.classList.remove('ativa'));
+      etapas[etapa].classList.add('ativa');
+    }
+
+    // Etapa 1: Seleção de Serviço
+    document.querySelectorAll('.btn-servico').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.btn-servico').forEach(b => b.classList.remove('selecionado'));
+        this.classList.add('selecionado');
+        servicoSelecionado = this.dataset.servico;
+        document.getElementById('btnAvancarServico').disabled = false;
+      });
+    });
+
+    document.getElementById('btnAvancarServico').addEventListener('click', () => {
+      navegarPara('data');
+      atualizarCalendario();
+    });
+
+    // Etapa 2: Seleção de Data
+    function atualizarCalendario() {
+      const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
+                    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+      document.getElementById('mesAtual').textContent = `${meses[mesAtual]} ${anoAtual}`;
+      
+      const calendario = document.getElementById('calendario');
+      calendario.innerHTML = '';
+
+      // Controla navegação entre meses
+      const mesLimite = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 1);
+      const dataAtualCalendario = new Date(anoAtual, mesAtual, 1);
+      
+      // Desativa botões de navegação conforme necessário
+      document.getElementById('btnMesAnterior').disabled = 
+        mesAtual === hoje.getMonth() && anoAtual === hoje.getFullYear();
+      
+      document.getElementById('btnProximoMes').disabled = 
+        dataAtualCalendario.getMonth() === mesLimite.getMonth() && 
+        dataAtualCalendario.getFullYear() === mesLimite.getFullYear();
+
+      const primeiroDia = new Date(anoAtual, mesAtual, 1).getDay();
+      const diasNoMes = new Date(anoAtual, mesAtual + 1, 0).getDate();
+      const diasMesAnterior = new Date(anoAtual, mesAtual, 0).getDate();
+
+      // Dias do mês anterior (apenas para layout)
+      for (let i = 0; i < primeiroDia; i++) {
+        const diaElement = document.createElement('div');
+        diaElement.className = 'dia indisponivel';
+        diaElement.textContent = diasMesAnterior - primeiroDia + i + 1;
+        calendario.appendChild(diaElement);
+      }
+
+      // Dias do mês atual
+      for (let dia = 1; dia <= diasNoMes; dia++) {
+        const diaElement = document.createElement('div');
+        diaElement.className = 'dia';
+        diaElement.textContent = dia;
+
+        const dataAtual = new Date(anoAtual, mesAtual, dia);
+        const mesLimite = new Date(hoje.getFullYear(), hoje.getMonth() + 2, 0);
+        
+        if (dataAtual.toDateString() === hoje.toDateString()) {
+          const spanHoje = document.createElement('span');
+          spanHoje.textContent = ' (Hoje)';
+          spanHoje.style.fontSize = '0.6rem';
+          diaElement.textContent = dia;
+          diaElement.appendChild(spanHoje);
+        }
+
+        // Verifica se é terça-feira (2)
+        if (dataAtual.getDay() === 2) {
+          diaElement.classList.add('indisponivel');
+          const spanFechado = document.createElement('span');
+          spanFechado.textContent = ' (Fechado)';
+          spanFechado.style.fontSize = '0.6rem';
+          diaElement.textContent = dia;
+          diaElement.appendChild(spanFechado);
+        } 
+        // Verifica se é o dia 24 de julho de 2025 e o serviço selecionado é "Unha, Pé e Mão"
+        else if (dia === 24 && mesAtual === 6 && anoAtual === 2025 && servicoSelecionado === "Unha, Pé e Mão") {
+          diaElement.classList.add('indisponivel', 'bloqueado-unhas');
+          const spanStatus = document.createElement('span');
+          spanStatus.style.fontSize = '0.6rem';
+          spanStatus.textContent = ' (Indisponível)';
+          diaElement.textContent = dia;
+          diaElement.appendChild(spanStatus);
+        }
+        // Verifica se é uma data passada ou mais de 1 mês à frente
+        else if (dataAtual < new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()) || 
+                dataAtual > mesLimite) {
+          diaElement.classList.add('indisponivel');
+          const spanStatus = document.createElement('span');
+          spanStatus.style.fontSize = '0.6rem';
+          
+          if (dataAtual < hoje) {
+            spanStatus.textContent = ' (Passado)';
+          } else {
+            spanStatus.textContent = ' (Indisponível)';
+          }
+          
+          diaElement.textContent = dia;
+          diaElement.appendChild(spanStatus);
+        }
+        else {
+          diaElement.addEventListener('click', function() {
+            document.querySelectorAll('.dia').forEach(d => d.classList.remove('selecionado'));
+            this.classList.add('selecionado');
+            diaSelecionado = dia;
+            document.getElementById('btnAvancarData').disabled = false;
+          });
+        }
+
+        calendario.appendChild(diaElement);
+      }
+
+      // Dias do próximo mês (apenas para layout)
+      const totalCelulas = Math.ceil((primeiroDia + diasNoMes) / 7) * 7;
+      const diasRestantes = totalCelulas - (primeiroDia + diasNoMes);
+      for (let i = 1; i <= diasRestantes; i++) {
+        const diaElement = document.createElement('div');
+        diaElement.className = 'dia indisponivel';
+        diaElement.textContent = i;
+        calendario.appendChild(diaElement);
+      }
+    }
+
+    // Navegação entre meses
+    document.getElementById('btnMesAnterior').addEventListener('click', () => {
+      mesAtual--;
+      if (mesAtual < 0) {
+        mesAtual = 11;
+        anoAtual--;
+      }
+      atualizarCalendario();
+    });
+
+    document.getElementById('btnProximoMes').addEventListener('click', () => {
+      mesAtual++;
+      if (mesAtual > 11) {
+        mesAtual = 0;
+        anoAtual++;
+      }
+      atualizarCalendario();
+    });
+
+    document.getElementById('btnVoltarData').addEventListener('click', () => {
+      navegarPara('servicos');
+    });
+
+    document.getElementById('btnAvancarData').addEventListener('click', () => {
+      navegarPara('horario');
+      atualizarHorarios();
+    });
+
+    // Função para verificar horários já agendados
+    async function verificarHorariosAgendados() {
+      try {
+        const dataFormatada = `${diaSelecionado.toString().padStart(2, '0')}/${(mesAtual + 1).toString().padStart(2, '0')}/${anoAtual}`;
+        
+        const querySnapshot = await db.collection("agendamentos")
+          .where("data", "==", dataFormatada)
+          .get();
+        
+        const agendamentos = [];
+        querySnapshot.forEach(doc => {
+          agendamentos.push({
+            horario: doc.data().horario,
+            servico: doc.data().servico
+          });
+        });
+        
+        return agendamentos;
+      } catch (error) {
+        console.error("Erro ao verificar horários:", error);
+        return [];
+      }
+    }
+
+    // Etapa 3: Seleção de Horário
+    async function atualizarHorarios() {
+      const horariosContainer = document.getElementById('horariosDisponiveis');
+      horariosContainer.innerHTML = '<p>Carregando horários disponíveis...</p>';
+      
+      // Verifica se é dia 24 de julho de 2025 e serviço é "Unha, Pé e Mão"
+      if (diaSelecionado === 24 && mesAtual === 6 && anoAtual === 2025 && servicoSelecionado === "Unha, Pé e Mão") {
+        horariosContainer.innerHTML = `
+          <div class="sem-horarios">
+            Não há horários disponíveis para este serviço no dia 24/07/2025.
+          </div>
+        `;
+        document.getElementById('btnAvancarHorario').disabled = true;
+        return;
+      }
+      
+      const agendamentos = await verificarHorariosAgendados();
+      const horarios = servicoSelecionado === 'Unha, Pé e Mão' ? horariosUnhas : horariosGerais;
+      
+      horariosContainer.innerHTML = '';
+      let horariosDisponiveis = false;
+      
+      horarios.forEach(horario => {
+        const horarioBtn = document.createElement('button');
+        horarioBtn.className = 'horario-btn';
+        horarioBtn.textContent = horario;
+        
+        // Verifica se o horário está ocupado
+        const horarioOcupado = agendamentos.some(ag => {
+          // Se for serviço exclusivo, verifica se já existe qualquer agendamento neste horário
+          if (servicosExclusivos.includes(servicoSelecionado)) {
+            return ag.horario === horario;
+          } 
+          // Se for "Unha, Pé e Mão", verifica apenas se já existe outro agendamento do mesmo serviço
+          else if (servicoSelecionado === "Unha, Pé e Mão") {
+            return ag.horario === horario && ag.servico === servicoSelecionado;
+          }
+          return false;
+        });
+        
+        if (horarioOcupado) {
+          horarioBtn.classList.add('indisponivel');
+          horarioBtn.disabled = true;
+          horarioBtn.title = "Horário já reservado";
+        } else {
+          horariosDisponiveis = true;
+          horarioBtn.addEventListener('click', function() {
+            document.querySelectorAll('.horario-btn').forEach(h => h.classList.remove('selecionado'));
+            this.classList.add('selecionado');
+            horarioSelecionado = horario;
+            document.getElementById('btnAvancarHorario').disabled = false;
+          });
+        }
+        
+        horariosContainer.appendChild(horarioBtn);
+      });
+      
+      if (!horariosDisponiveis) {
+        const mensagem = document.createElement('div');
+        mensagem.className = 'sem-horarios';
+        mensagem.textContent = 'Todos os horários para este serviço estão ocupados nesta data. Por favor, selecione outra data ou horário.';
+        horariosContainer.appendChild(mensagem);
+        document.getElementById('btnAvancarHorario').disabled = true;
+      } else {
+        document.getElementById('btnAvancarHorario').disabled = horarioSelecionado === null;
+      }
+    }
+
+    document.getElementById('btnVoltarHorario').addEventListener('click', () => {
+      navegarPara('data');
+    });
+
+    document.getElementById('btnAvancarHorario').addEventListener('click', () => {
+      navegarPara('informacoes');
+    });
+
+    // Etapa 4: Informações Pessoais
+    document.getElementById('btnVoltarInformacoes').addEventListener('click', () => {
+      navegarPara('horario');
+    });
+
+    document.getElementById('btnConfirmarAgendamento').addEventListener('click', () => {
+      const nome = document.getElementById('nomeCompleto').value.trim();
+      const telefone = document.getElementById('telefone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      
+      if (!nome || !telefone || !email) {
+        alert('Por favor, preencha todos os campos!');
+        return;
+      }
+      
+      if (!email.includes('@') || !email.includes('.')) {
+        alert('Por favor, insira um e-mail válido!');
+        return;
+      }
+      
+      document.getElementById('resumoServico').textContent = servicoSelecionado;
+      
+      const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
+                    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+      document.getElementById('resumoData').textContent = `${diaSelecionado} de ${meses[mesAtual]} de ${anoAtual}`;
+      
+      document.getElementById('resumoHorario').textContent = horarioSelecionado;
+      document.getElementById('resumoNome').textContent = nome;
+      document.getElementById('resumoTelefone').textContent = telefone;
+      document.getElementById('resumoEmail').textContent = email;
+      
+      navegarPara('resumo');
+    });
+
+    // Etapa 5: Confirmação Final
+    document.getElementById('btnVoltarResumo').addEventListener('click', () => {
+      navegarPara('informacoes');
+    });
+
+    document.getElementById('btnFinalizarAgendamento').addEventListener('click', async () => {
+      try {
+        // Verificação adicional para o bloqueio do dia 24/07/2025 para unhas
+        if (diaSelecionado === 24 && mesAtual === 6 && anoAtual === 2025 && servicoSelecionado === "Unha, Pé e Mão") {
+          alert('Não é possível agendar o serviço "Unha, Pé e Mão" para o dia 24/07/2025.');
+          navegarPara('data');
+          return;
+        }
+        
+        const dataFormatada = `${diaSelecionado.toString().padStart(2, '0')}/${(mesAtual + 1).toString().padStart(2, '0')}/${anoAtual}`;
+        const nome = document.getElementById('nomeCompleto').value.trim();
+        const telefone = document.getElementById('telefone').value.trim();
+        const email = document.getElementById('email').value.trim();
+        
+        // Verificação final de disponibilidade
+        const agendamentos = await verificarHorariosAgendados();
+        
+        // Verifica se o horário ainda está disponível
+        const horarioOcupado = agendamentos.some(ag => {
+          // Se for serviço exclusivo, verifica se já existe qualquer agendamento neste horário
+          if (servicosExclusivos.includes(servicoSelecionado)) {
+            return ag.horario === horarioSelecionado;
+          } 
+          // Se for "Unha, Pé e Mão", verifica apenas se já existe outro agendamento do mesmo serviço
+          else if (servicoSelecionado === "Unha, Pé e Mão") {
+            return ag.horario === horarioSelecionado && ag.servico === servicoSelecionado;
+          }
+          return false;
+        });
+        
+        if (horarioOcupado) {
+          alert('Este horário foi reservado enquanto você preenchia o formulário. Por favor, selecione outro horário.');
+          navegarPara('horario');
+          await atualizarHorarios();
+          return;
+        }
+        
+        await db.collection("agendamentos").add({
+          servico: servicoSelecionado,
+          data: dataFormatada,
+          horario: horarioSelecionado,
+          cliente: nome,
+          telefone: telefone,
+          email: email,
+          status: "pendente",
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Mostra mensagem de sucesso
+        alert('Agendamento realizado com sucesso!');
+        
+        // Redireciona para a página inicial
+        window.location.href = "index.html";
+      } catch (error) {
+        console.error("Erro ao salvar no Firebase:", error);
+        alert("Ocorreu um erro ao agendar. Por favor, tente novamente.");
+      }
+    });
+
+    // Inicialização
+    atualizarCalendario();
+  </script>
+</body>
+</html>

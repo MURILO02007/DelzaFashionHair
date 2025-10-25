@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="icon" href="img/Imagem do WhatsApp de 2025-05-07 à(s) 14.58.20_2e624ae2.jpg" type="image/png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {      
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    .logo:hover {
+      transform: scale(1.10);
+    }
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .linkLogin {
+      text-decoration: none;
+      color: #ffffff;
+      padding: 5px 10px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 25px;
+      border-radius: 10px;
+     
+    }
+
+    .linkLogin:hover {
+      transform: scale(1.05);
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    img:hover {
+      transform: scale(1.10);
+    }
+
+    .Delza {
+      flex-grow: 1;
+      text-align: center;
+      color: #70292a;
+      font-size: 28px;
+      margin-left: 30px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      margin: auto;
+    }
+
+    input {
+      margin-top: 10px;
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .cadastroBnt {
+      background-color: #28a745;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      width: calc(100% - 20px);
+    }
+
+    .cadastroBnt:hover {
+      background-color: #218838;
+    }
+
+    #mensagem {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    a {
+      margin-top: 10px;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img class="logo" src="img/Imagem do WhatsApp de 2025-05-07 à(s) 14.58.20_2e624ae2.jpg" alt="">
+    <div class="areaDoUsuario">
+      <nav>
+        <a class="linkLogin" href="index.html"><img src="img/homeicon.png" alt=""></a>
+      </nav>
+    </div>
+  </header>
+
+  <form id="cadastroForm">
+    <h2 style="color: #70292a;">Login</h2>
+    <input type="tel" id="numero" placeholder="Número de telefone (ex: 11999999999)" required />
+    <input type="password" id="senha" placeholder="Senha" required />
+    <button class="cadastroBnt" type="submit">Login</button>
+    <a href="pagCadastro.html">Não tenho um cadastro!</a>
+  </form>
+
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+  import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCwXkEYnYHyP079rCVWDK6EU1ESE1CLekY",
+    authDomain: "banco-de-dados-para-agendas.firebaseapp.com",
+    projectId: "banco-de-dados-para-agendas",
+    storageBucket: "banco-de-dados-para-agendas.firebasestorage.app",
+    messagingSenderId: "777639279776",
+    appId: "1:777639279776:web:06b871fc065e2154569dc5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const form = document.getElementById("cadastroForm");
+  const msg = document.createElement("p");
+  msg.id = "mensagem";
+  form.appendChild(msg);
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const numero = document.getElementById("numero").value.trim();
+    const senha = document.getElementById("senha").value.trim();
+
+    if (!numero || !senha) {
+      msg.style.color = "red";
+      msg.textContent = "Preencha todos os campos!";
+      return;
+    }
+
+    const numeroValido = /^\d{10,}$/.test(numero);
+    if (!numeroValido) {
+      msg.style.color = "red";
+      msg.textContent = "Digite um número válido com ao menos 10 dígitos!";
+      return;
+    }
+
+    // ✅ Checagem especial para o administrador
+    if (numero === "71987427196" && senha === "1234") {
+      msg.style.color = "green";
+      msg.textContent = "Bem-vindo, administrador!";
+      setTimeout(() => {
+        window.location.href = "areaDoAdm.html";
+      }, 1000);
+      return;
+    }
+
+    // 🔄 Continua para verificar no Firebase
+    try {
+      const q = query(
+        collection(db, "usuarios"),
+        where("numero", "==", numero),
+        where("senha", "==", senha)
+      );
+      const resultado = await getDocs(q);
+
+      if (!resultado.empty) {
+      
+        msg.style.color = "green";
+        const usuario = resultado.docs[0].data();
+        localStorage.setItem("nomeUsuario", usuario.nome);
+        localStorage.setItem("numeroUsuario", usuario.numero);
+        msg.textContent = "Login realizado com sucesso!";
+        setTimeout(() => {
+          window.location.href = "paginadeagendamento.html";
+        }, 1000);
+      } else {
+        msg.style.color = "red";
+        msg.textContent = "Número ou senha inválidos!";
+      }
+    } catch (error) {
+      msg.style.color = "red";
+      msg.textContent = "Erro ao fazer login: " + error.message;
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agendamentos - ADM</title>
+  <link rel="icon" href="img/Imagem do WhatsApp de 2025-05-07 à(s) 14.58.20_2e624ae2.jpg" type="image/png">
+  <style>
+    :root {
+      --cor-primaria: #70292a;
+      --cor-secundaria: #c0392b;
+      --cor-texto: #333;
+      --cor-fundo: #f8f8f8;
+      --cor-branco: #fff;
+      --cor-sucesso: #2ecc71;
+      --cor-alerta: #f39c12;
+      --cor-erro: #e74c3c;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--cor-fundo);
+      margin: 0;
+      padding: 20px;
+      color: var(--cor-texto);
+      line-height: 1.6;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--cor-primaria);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+      object-fit: cover;
+      border: 2px solid var(--cor-primaria);
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--cor-primaria);
+      margin-bottom: 30px;
+      font-size: 2rem;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background-color: var(--cor-primaria);
+    }
+
+    .controles {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .filtros {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-primario {
+      background-color: var(--cor-primaria);
+      color: var(--cor-branco);
+    }
+
+    .btn-primario:hover {
+      background-color: #5a2021;
+    }
+
+    .btn-secundario {
+      background-color: var(--cor-secundaria);
+      color: var(--cor-branco);
+    }
+
+    .btn-secundario:hover {
+      background-color: #a5281b;
+    }
+
+    .btn-terciario {
+      background-color: #3498db;
+      color: var(--cor-branco);
+    }
+
+    .btn-terciario:hover {
+      background-color: #2980b9;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: var(--cor-branco);
+      box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background-color: var(--cor-primaria);
+      color: var(--cor-branco);
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .btn-acao {
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-apagar {
+      background-color: var(--cor-secundaria);
+      color: var(--cor-branco);
+    }
+
+    .btn-apagar:hover {
+      background-color: #a5281b;
+    }
+
+    .btn-editar {
+      background-color: #3498db;
+      color: var(--cor-branco);
+    }
+
+    .btn-editar:hover {
+      background-color: #2980b9;
+    }
+
+    .btn-concluir {
+      background-color: #2ecc71;
+      color: var(--cor-branco);
+    }
+
+    .btn-concluir:hover {
+      background-color: #27ae60;
+    }
+
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .concluido {
+      background-color: #e8f5e9;
+      color: #2ecc71;
+    }
+
+    .cancelado {
+      background-color: #ffebee;
+      color: #e74c3c;
+    }
+
+    .pendente {
+      background-color: #fff8e1;
+      color: #f39c12;
+    }
+
+    .nenhum-registro {
+      text-align: center;
+      padding: 30px;
+      color: #7f8c8d;
+      font-style: italic;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: var(--cor-branco);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+
+      td {
+        padding: 10px 10px 10px 50%;
+        position: relative;
+        border-bottom: 1px solid #eee;
+      }
+
+      td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        font-weight: bold;
+        color: var(--cor-primaria);
+      }
+
+      td:last-child {
+        border-bottom: 0;
+      }
+
+      .btn-acao {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img class="logo" src="img/Imagem do WhatsApp de 2025-05-07 à(s) 14.58.20_2e624ae2.jpg" alt="Logo Delza Fashion Hair">
+      <h2>Painel Administrativo</h2>
+    </div>
+    
+    <nav>
+      <a href="index.html" class="btn btn-primario">
+        <i>🏠</i> Voltar
+      </a>
+    </nav>
+  </header>
+
+  <h1>Gerenciamento de Agendamentos</h1>
+
+  <div class="controles">
+    <div class="filtros">
+      <button id="btn-todos" class="btn btn-primario">Todos</button>
+      <button id="btn-pendentes" class="btn btn-terciario">Pendentes</button>
+      <button id="btn-concluidos" class="btn" style="background-color: #2ecc71; color: white;">Concluídos</button>
+      <button id="btn-cancelados" class="btn btn-secundario">Cancelados</button>
+    </div>
+    <button id="btn-atualizar" class="btn btn-primario">
+      <span id="loading-icon" class="loading" style="display: none;"></span>
+      Atualizar
+    </button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Cliente</th>
+        <th>E-mail</th>
+        <th>Telefone</th>
+        <th>Serviço</th>
+        <th>Data</th>
+        <th>Horário</th>
+        <th>Status</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody id="tabela-agendamentos">
+      <tr>
+        <td colspan="8" class="nenhum-registro">Carregando agendamentos...</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal para edição -->
+  <div id="modal-edicao" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div style="background-color: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 500px;">
+      <h2 id="modal-titulo" style="margin-top: 0;">Editar Agendamento</h2>
+      <form id="form-edicao">
+        <input type="hidden" id="editar-id">
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: bold;">Cliente</label>
+          <input type="text" id="editar-cliente" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: bold;">E-mail</label>
+          <input type="email" id="editar-email" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: bold;">Telefone</label>
+          <input type="text" id="editar-telefone" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: bold;">Serviço</label>
+          <input type="text" id="editar-servico" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: bold;">Data</label>
+          <input type="text" id="editar-data" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: bold;">Horário</label>
+          <input type="text" id="editar-horario" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: bold;">Status</label>
+          <select id="editar-status" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            <option value="pendente">Pendente</option>
+            <option value="concluido">Concluído</option>
+            <option value="cancelado">Cancelado</option>
+          </select>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" id="btn-cancelar-edicao" class="btn btn-secundario">Cancelar</button>
+          <button type="submit" class="btn btn-primario">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      deleteDoc,
+      doc,
+      updateDoc,
+      query,
+      where,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwXkEYnYHyP079rCVWDK6EU1ESE1CLekY",
+      authDomain: "banco-de-dados-para-agendas.firebaseapp.com",
+      projectId: "banco-de-dados-para-agendas",
+      storageBucket: "banco-de-dados-para-agendas.appspot.com",
+      messagingSenderId: "777639279776",
+      appId: "1:777639279776:web:06b871fc065e2154569dc5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const tabela = document.getElementById("tabela-agendamentos");
+    const btnAtualizar = document.getElementById("btn-atualizar");
+    const loadingIcon = document.getElementById("loading-icon");
+    const filtros = {
+      todos: document.getElementById("btn-todos"),
+      pendentes: document.getElementById("btn-pendentes"),
+      concluidos: document.getElementById("btn-concluidos"),
+      cancelados: document.getElementById("btn-cancelados")
+    };
+
+    const modalEdicao = document.getElementById("modal-edicao");
+    const formEdicao = document.getElementById("form-edicao");
+    const btnCancelarEdicao = document.getElementById("btn-cancelar-edicao");
+
+    let agendamentos = [];
+    let filtroAtual = 'todos';
+    let unsubscribe = null;
+
+    function formatarData(dataString) {
+      if (!dataString) return "-";
+      const [dia, mes, ano] = dataString.split('/');
+      const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+      const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+      const dataObj = new Date(ano, parseInt(mes) - 1, dia);
+      const diaSemana = diasSemana[dataObj.getDay()];
+      return `${diaSemana}, ${dia} ${meses[parseInt(mes) - 1]} ${ano}`;
+    }
+
+    function renderizarTabela(dados) {
+      if (dados.length === 0) {
+        tabela.innerHTML = `
+          <tr>
+            <td colspan="8" class="nenhum-registro">
+              Nenhum agendamento encontrado
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tabela.innerHTML = dados.map(ag => `
+        <tr class="${ag.status || 'pendente'}">
+          <td data-label="Cliente">${ag.cliente || "Anônimo"}</td>
+          <td data-label="E-mail">${ag.email || "Não informado"}</td>
+          <td data-label="Telefone">${ag.telefone || "Não informado"}</td>
+          <td data-label="Serviço">${ag.servico || "Serviço não especificado"}</td>
+          <td data-label="Data">${formatarData(ag.data)}</td>
+          <td data-label="Horário">${ag.horario || "-"}</td>
+          <td data-label="Status">
+            <span class="status-badge ${ag.status || 'pendente'}">
+              ${ag.status ? ag.status.charAt(0).toUpperCase() + ag.status.slice(1) : 'Pendente'}
+            </span>
+          </td>
+          <td data-label="Ações">
+            <button class="btn-acao btn-editar" data-id="${ag.id}">
+              <i>✏️</i> Editar
+            </button>
+            <button class="btn-acao btn-concluir" data-id="${ag.id}" ${ag.status === 'concluido' ? 'disabled style="opacity:0.5"' : ''}>
+              <i>✅</i> Concluir
+            </button>
+            <button class="btn-acao btn-apagar" data-id="${ag.id}">
+              <i>🗑️</i> Apagar
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.querySelectorAll('.btn-apagar').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          apagarAgendamento(e.target.closest('button').dataset.id);
+        });
+      });
+
+      document.querySelectorAll('.btn-editar').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          abrirModalEdicao(e.target.closest('button').dataset.id);
+        });
+      });
+
+      document.querySelectorAll('.btn-concluir').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          concluirAgendamento(e.target.closest('button').dataset.id);
+        });
+      });
+    }
+
+    async function carregarAgendamentos() {
+      try {
+        loadingIcon.style.display = 'inline-block';
+        btnAtualizar.disabled = true;
+
+        let q;
+        if (filtroAtual === 'todos') {
+          q = collection(db, "agendamentos");
+        } else {
+          q = query(collection(db, "agendamentos"), where("status", "==", filtroAtual));
+        }
+
+        if (unsubscribe) unsubscribe();
+
+        unsubscribe = onSnapshot(q, (snapshot) => {
+          agendamentos = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+            timestamp: doc.data().timestamp?.toDate?.() || new Date()
+          }));
+
+          agendamentos.sort((a, b) => b.timestamp - a.timestamp);
+          renderizarTabela(agendamentos);
+        }, (error) => {
+          console.error("Erro ao carregar agendamentos:", error);
+          tabela.innerHTML = `
+            <tr>
+              <td colspan="8" class="nenhum-registro">
+                Erro ao carregar agendamentos. Tente recarregar a página.
+              </td>
+            </tr>
+          `;
+        });
+
+      } catch (error) {
+        console.error("Erro:", error);
+      } finally {
+        loadingIcon.style.display = 'none';
+        btnAtualizar.disabled = false;
+      }
+    }
+
+    async function apagarAgendamento(id) {
+      if (!id) return;
+
+      if (confirm("Tem certeza que deseja apagar este agendamento?")) {
+        try {
+          await deleteDoc(doc(db, "agendamentos", id));
+          alert("Agendamento apagado com sucesso!");
+        } catch (error) {
+          console.error("Erro ao apagar:", error);
+          alert("Falha ao apagar agendamento");
+        }
+      }
+    }
+
+    async function concluirAgendamento(id) {
+      if (!id) return;
+
+      if (confirm("Marcar este agendamento como concluído?")) {
+        try {
+          await updateDoc(doc(db, "agendamentos", id), {
+            status: "concluido"
+          });
+          alert("Agendamento marcado como concluído!");
+        } catch (error) {
+          console.error("Erro ao atualizar:", error);
+          alert("Falha ao atualizar agendamento");
+        }
+      }
+    }
+
+    function abrirModalEdicao(id) {
+      const agendamento = agendamentos.find(a => a.id === id);
+      if (!agendamento) return;
+
+      document.getElementById("editar-id").value = agendamento.id;
+      document.getElementById("editar-cliente").value = agendamento.cliente || "";
+      document.getElementById("editar-email").value = agendamento.email || "";
+      document.getElementById("editar-telefone").value = agendamento.telefone || "";
+      document.getElementById("editar-servico").value = agendamento.servico || "";
+      document.getElementById("editar-data").value = agendamento.data || "";
+      document.getElementById("editar-horario").value = agendamento.horario || "";
+      document.getElementById("editar-status").value = agendamento.status || "pendente";
+
+      modalEdicao.style.display = "flex";
+    }
+
+    async function salvarEdicao(e) {
+      e.preventDefault();
+
+      const id = document.getElementById("editar-id").value;
+      const cliente = document.getElementById("editar-cliente").value;
+      const email = document.getElementById("editar-email").value;
+      const telefone = document.getElementById("editar-telefone").value;
+      const servico = document.getElementById("editar-servico").value;
+      const data = document.getElementById("editar-data").value;
+      const horario = document.getElementById("editar-horario").value;
+      const status = document.getElementById("editar-status").value;
+
+      try {
+        await updateDoc(doc(db, "agendamentos", id), {
+          cliente,
+          email,
+          telefone,
+          servico,
+          data,
+          horario,
+          status
+        });
+
+        alert("Agendamento atualizado com sucesso!");
+        modalEdicao.style.display = "none";
+      } catch (error) {
+        console.error("Erro ao atualizar:", error);
+        alert("Falha ao atualizar agendamento");
+      }
+    }
+
+    btnAtualizar.addEventListener('click', carregarAgendamentos);
+    formEdicao.addEventListener('submit', salvarEdicao);
+    btnCancelarEdicao.addEventListener('click', () => {
+      modalEdicao.style.display = "none";
+    });
+
+    Object.entries(filtros).forEach(([key, btn]) => {
+      btn.addEventListener('click', () => {
+        filtroAtual = key;
+        Object.values(filtros).forEach(b => {
+          b.classList.remove('active');
+          b.style.opacity = '0.7';
+        });
+        btn.classList.add('active');
+        btn.style.opacity = '1';
+
+        carregarAgendamentos();
+      });
+    });
+
+    modalEdicao.addEventListener('click', (e) => {
+      if (e.target === modalEdicao) {
+        modalEdicao.style.display = "none";
+      }
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      console.log("Iniciando painel administrativo...");
+      carregarAgendamentos();
+    });
+  </script>
+</body>
+</html>

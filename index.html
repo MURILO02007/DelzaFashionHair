@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Salão de beleza Delza Fashion Hair - Serviços de cabelo, unhas e venda de roupas. Agendamento online.">
+  <meta name="keywords" content="salão de beleza, progressiva, unhas decoradas, roupas femininas, agendamento online">
+  <meta name="author" content="Delza Fashion Hair">
+  
+  <title>Delza Fashion Hair | Salão de Beleza</title>
+  <link rel="icon" href="img/Imagem do WhatsApp de 2025-05-07 à(s) 14.58.20_2e624ae2.jpg" type="image/png">
+  
+  <!-- Fontes do Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-color: #a85c5e;
+      --primary-dark: #70292a;
+      --primary-light: #ffdada;
+      --text-color: #333;
+      --light-text: #777;
+      --white: #fff;
+      --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text-color);
+      background-color: var(--white);
+      line-height: 1.6;
+    }
+    
+    /* Header */
+    header {
+      background-color: var(--white);
+      box-shadow: var(--shadow);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      padding: 15px 5%;
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+    
+    .logo:hover {
+      transform: scale(1.05);
+    }
+    
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+    
+    /* Menu Hamburguer */
+    .menu-toggle {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 20px;
+      z-index: 1002;
+      position: absolute;
+      right: 20px;
+    }
+    
+    .menu-toggle span {
+      display: block;
+      width: 100%;
+      height: 3px;
+      background-color: var(--primary-dark);
+      transition: var(--transition);
+    }
+    
+    .menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+    
+    /* Navegação */
+    .nav-links {
+      display: flex;
+      padding-right: 0px;
+      gap: 20px;
+      position: absolute;
+      right: 100px;
+    }
+    
+    .nav-link {
+      color: var(--primary-dark);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+    
+    .nav-link:hover {
+      color: var(--white);
+      background-color: var(--primary-color);
+    }
+    
+    .cta-button {
+      background-color: var(--primary-color);
+      color: var(--white);
+      padding: 20px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+      border: 2px solid var(--primary-color);
+    }
+    
+    .cta-button:hover {
+      background-color: transparent;
+      color: var(--primary-color);
+    }
+    
+    /* Conteúdo Principal */
+    main {
+      margin-top: 90px;
+      padding: 40px 5%;
+    }
+    
+    .hero {
+      text-align: center;
+      padding: 40px 0;
+    }
+    
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--primary-dark);
+      margin-bottom: 20px;
+    }
+    
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--light-text);
+      max-width: 700px;
+      margin: 0 auto 30px;
+    }
+    
+    /* Seção de Serviços */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--primary-dark);
+      text-align: center;
+      margin: 50px 0 30px;
+      position: relative;
+    }
+    
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 3px;
+      background-color: var(--primary-color);
+      margin: 15px auto;
+    }
+    
+    .services-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+    
+    .service-card {
+      background-color: var(--white);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+    
+    .service-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .service-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .service-info {
+      padding: 20px;
+    }
+    
+    .service-info h3 {
+      font-size: 1.3rem;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+    }
+    
+    .service-info p {
+      color: var(--light-text);
+      margin-bottom: 15px;
+    }
+    
+    .price {
+      font-weight: 700;
+      color: var(--primary-color);
+      font-size: 1.2rem;
+    }
+    
+    .promo-badge {
+      background-color: var(--primary-color);
+      color: var(--white);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      display: inline-block;
+      margin-left: 10px;
+    }
+    
+    .price-info {
+      font-size: 0.9rem;
+      color: var(--light-text);
+      margin-top: 5px;
+    }
+    
+    /* Galeria Antes/Depois */
+    .gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      margin: 50px 0;
+    }
+    
+    .comparison-card {
+      background-color: var(--white);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .comparison-title {
+      text-align: center;
+      padding: 15px;
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+    
+    .comparison-images {
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+    }
+    
+    .comparison-images img {
+      width: 100%;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    
+    .before-after {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    
+    .before, .after {
+      font-weight: 500;
+      color: var(--primary-dark);
+    }
+    
+    /* Seção de Produtos */
+    .products-section {
+      margin: 50px 0;
+      text-align: center;
+    }
+    
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 30px;
+      justify-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .product-card {
+      background-color: var(--white);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      width: 100%;
+      max-width: 200px;
+    }
+    
+    .product-card:hover {
+      transform: scale(1.03);
+    }
+    
+    .product-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+    
+    .product-category-title {
+      text-align: center;
+      color: var(--primary-dark);
+      margin: 40px 0 20px;
+      font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
+    }
+    
+    /* Aviso de promoção */
+    .promo-notice {
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px auto;
+      max-width: 800px;
+      text-align: center;
+      border-left: 4px solid var(--primary-color);
+    }
+    
+    .promo-notice strong {
+      color: var(--primary-dark);
+    }
+    
+    /* Menu Lateral */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 300px;
+      height: 100%;
+      background-color: var(--white);
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+      transition: var(--transition);
+      z-index: 1001;
+      padding: 80px 20px 20px;
+      overflow-y: auto;
+    }
+    
+    .side-menu.active {
+      right: 0;
+    }
+    
+    .side-menu h3 {
+      color: var(--primary-dark);
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      border-bottom: 1px solid var(--primary-light);
+      padding-bottom: 10px;
+    }
+    
+    .side-menu ul {
+      list-style: none;
+    }
+    
+    .side-menu li {
+      margin-bottom: 15px;
+    }
+    
+    .side-menu a {
+      color: var(--text-color);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    
+    .side-menu a:hover {
+      color: var(--primary-color);
+    }
+    
+    .close-menu {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--primary-dark);
+    }
+    
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+    
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Rodapé */
+    footer {
+      background-color: var(--primary-dark);
+      color: var(--white);
+      padding: 40px 5%;
+      text-align: center;
+    }
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      text-align: left;
+    }
+    
+    .footer-column h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .footer-column h3::after {
+      content: '';
+      display: block;
+      width: 50px;
+      height: 2px;
+      background-color: var(--primary-color);
+      margin-top: 10px;
+    }
+    
+    .footer-column p, .footer-column a {
+      color: #ddd;
+      margin-bottom: 10px;
+      display: block;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    
+    .footer-column a:hover {
+      color: var(--white);
+      padding-left: 5px;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    
+    .social-links a {
+      color: var(--white);
+      font-size: 1.2rem;
+    }
+    
+    .copyright {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.9rem;
+    }
+    
+    /* Responsividade */
+    @media (min-width: 768px) {
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .section-title {
+        font-size: 1.8rem;
+      }
+      
+      .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 20px;
+      }
+      
+      .product-card {
+        max-width: 150px;
+      }
+      
+      .product-image {
+        height: 200px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      header {
+        padding: 15px;
+      }
+      
+      .brand-name {
+        font-size: 1.2rem;
+      }
+      
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      
+      .section-title {
+        font-size: 1.5rem;
+      }
+      
+      .services-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+      
+      .product-card {
+        max-width: 100%;
+      }
+      
+      .product-image {
+        height: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo-container">
+      <img src="img/Imagem do WhatsApp de 2025-05-07 à(s) 14.58.20_2e624ae2.jpg" alt="Delza Fashion Hair" class="logo">
+      <span class="brand-name">Delza Fashion Hair</span>
+    </div>
+    
+    <nav class="nav-links">
+      <a href="#services" class="nav-link">Serviços</a>
+      <a href="#gallery" class="nav-link">Galeria</a>
+      <a href="#products" class="nav-link">Produtos</a>
+    </nav>
+    
+    <div class="menu-toggle" id="menuToggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+  
+  <!-- Menu Lateral Mobile -->
+  <div class="overlay" id="overlay"></div>
+  
+  <div class="side-menu" id="sideMenu">
+    <span class="close-menu" id="closeMenu">&times;</span>
+    <h3>Menu</h3>
+    <ul>
+      <li><a href="#home">Início</a></li>
+      <li><a href="#services">Serviços</a></li>
+      <li><a href="#gallery">Galeria</a></li>
+      <li><a href="#products">Produtos</a></li>
+      <li><a href="#contact">Contato</a></li>
+      <li><a href="paginadeagendamento.html" class="cta-button" style="display: inline-block; margin-top: 20px;">Agendar Horário</a></li>
+    </ul>
+  </div>
+  
+  <!-- Conteúdo Principal -->
+  <main id="home">
+    <section class="hero">
+      <h1>Transformando sua beleza com excelência</h1>
+      <p>No Delza Fashion Hair, cuidamos do seu cabelo, unhas e estilo com os melhores produtos e profissionais qualificados.</p>
+      <a href="paginadeagendamento.html" class="cta-button">Agende seu horário</a>
+    </section>
+    
+    <!-- Aviso de promoção -->
+    <div class="promo-notice">
+      <p><strong>PROMOÇÃO :</strong> Os preços mostrados são válidos apenas nas segundas e quartas-feiras!</p>
+    </div>
+    
+    <!-- Serviços -->
+    <section id="services">
+      <h2 class="section-title">Nossos Serviços</h2>
+      <p style="text-align: center; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto;">
+        Oferecemos tratamentos capilares especializados, manicure e pedicure com os melhores produtos do mercado.
+      </p>
+      
+      <div class="services-container">
+        <!-- Serviço 1 -->
+        <div class="service-card">
+          <img src="img/imagemDeUnha1.jpg" alt="Progressiva" class="service-image">
+          <div class="service-info">
+            <h3>Progressiva</h3>
+            <p>Tratamento para alisar e revitalizar seus cabelos.</p>
+            <p class="price"> A PARTIR DE: R$ 100,00 </p>
+          </div>
+        </div>
+        
+        <!-- Serviço 2 -->
+        <div class="service-card">
+          <img src="img/imagemDeUnha2.jpg" alt="Botox Capilar" class="service-image">
+          <div class="service-info">
+            <h3>Botox Capilar</h3>
+            <p>Hidratação profunda que reconstrói os fios.</p>
+            <p class="price">A PARTIR DE: R$ 70,00 </p>
+          </div>
+        </div>
+        
+        <!-- Serviço 3 -->
+        <div class="service-card">
+          <img src="img/imageDeUnha3.jpg" alt="Unhas Decoradas" class="service-image">
+          <div class="service-info">
+            <h3>Unha, Pé e Mão</h3>
+            <p>Unhas decoradas com os melhores esmaltes.</p>
+            <p class="price">R$ 30,00</p>
+          </div>
+        </div>
+        
+        <!-- Serviço 4 -->
+        <div class="service-card">
+          <img src="img/imagem2decabelo.jpg" alt="Corte Feminino" class="service-image">
+          <div class="service-info">
+            <h3>Corte</h3>
+            <p>Corte personalizado para valorizar seu rosto.</p>
+            <p class="price">A PARTIR DE: R$ 35,00 </p>
+          </div>
+        </div>
+        
+        <!-- Serviço 5 -->
+        <div class="service-card">
+          <img src="img/imagem4decabelo.jpg" alt="Luzes" class="service-image">
+          <div class="service-info">
+            <h3>Luzes</h3>
+            <p>Realce seus traços com mechas perfeitas.</p>
+            <p class="price">A PARTIR DE: R$ 150,00 </p>
+          </div>
+        </div>
+        
+        <!-- Serviço 6 -->
+        <div class="service-card">
+          <img src="img/imagem6decabelo.jpg" alt="Escova" class="service-image">
+          <div class="service-info">
+            <h3>Escova</h3>
+            <p>Finalização perfeita para seu cabelo.</p>
+            <p class="price">R$ 25,00</p>
+          </div>
+        </div>
+        
+        <!-- Serviço 7 -->
+        <div class="service-card">
+          <img src="img/imagem6decabelo.jpg" alt="Selante" class="service-image">
+          <div class="service-info">
+            <h3>Selante</h3>
+            <p>Tratamento para selar as cutículas e proteger os fios.</p>
+            <p class="price">A PARTIR DE: R$ 90,00 </p>
+          </div>
+        </div>
+        
+        <!-- Serviço 8 -->
+        <div class="service-card">
+          <img src="img/imagem6decabelo.jpg" alt="Alizantes" class="service-image">
+          <div class="service-info">
+            <h3>Alizantes</h3>
+            <p>Tratamento para alisar os cabelos com efeito prolongado.</p>
+            <p class="price">A PARTIR DE: R$ 100,00</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Galeria Antes/Depois -->
+    <section id="gallery">
+      <h2 class="section-title">Transformações</h2>
+      <p style="text-align: center; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto;">
+        Veja alguns dos nossos trabalhos e o incrível antes e depois que fazemos por nossos clientes.
+      </p>
+      
+      <div class="gallery">
+        <!-- Transformação 1 -->
+        <div class="comparison-card">
+          <div class="comparison-title">Transformação Capilar</div>
+          <div class="comparison-images">
+            <div class="before-after">
+              <span class="before">Antes</span>
+              <span class="after">Depois</span>
+            </div>
+            <img src="img/imagem1Decabelo.jpg" alt="Cabelo antes">
+            <img src="img/imagem2decabelo.jpg" alt="Cabelo depois">
+          </div>
+        </div>
+        
+        <!-- Transformação 2 -->
+        <div class="comparison-card">
+          <div class="comparison-title">Coloração Profissional</div>
+          <div class="comparison-images">
+            <div class="before-after">
+              <span class="before">Antes</span>
+              <span class="after">Depois</span>
+            </div>
+            <img src="img/imagem3decabelo.jpg" alt="Cabelo antes">
+            <img src="img/imagem4decabelo.jpg" alt="Cabelo depois">
+          </div>
+        </div>
+        
+        <!-- Transformação 3 -->
+        <div class="comparison-card">
+          <div class="comparison-title">Tratamento Completo</div>
+          <div class="comparison-images">
+            <div class="before-after">
+              <span class="before">Antes</span>
+              <span class="after">Depois</span>
+            </div>
+            <img src="img/imagem5decabelo.jpg" alt="Cabelo antes">
+            <img src="img/imagem6decabelo.jpg" alt="Cabelo depois">
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Produtos (Roupas e Calçados) -->
+    <section id="products">
+      <h2 class="section-title">Nossos Produtos</h2>
+      <p style="text-align: center; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto;">
+        Além dos serviços de beleza, também oferecemos uma seleção especial de roupas e calçados.
+      </p>
+      
+      <div class="products-section">
+        <h3 class="product-category-title">Roupas</h3>
+        <div class="products-grid">
+          <div class="product-card">
+            <img src="img/IMG-20250516-WA0019.jpg" alt="Roupa 1" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/IMG-20250516-WA0020.jpg" alt="Roupa 2" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/IMG-20250516-WA0021.jpg" alt="Roupa 3" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/IMG-20250516-WA0022.jpg" alt="Roupa 4" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/IMG-20250516-WA0023.jpg" alt="Roupa 5" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/IMG-20250516-WA0024.jpg" alt="Roupa 6" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/IMG-20250516-WA0025.jpg" alt="Roupa 7" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/IMG-20250516-WA0026.jpg" alt="Roupa 8" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/Imagem do WhatsApp de 2025-08-11 à(s) 15.07.01_c8186c68.jpg" alt="Roupa 9" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/Imagem do WhatsApp de 2025-08-11 à(s) 16.04.46_14696de2.jpg" alt="Roupa 10" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/Imagem do WhatsApp de 2025-08-11 à(s) 16.09.32_36fbafff.jpg" alt="Roupa 11" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/Imagem do WhatsApp de 2025-08-11 à(s) 16.11.51_ab9316b0.jpg" alt="Roupa 12" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/Imagem do WhatsApp de 2025-08-11 à(s) 16.13.00_24eb21ff.jpg" alt="Roupa 13" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/Imagem do WhatsApp de 2025-08-11 à(s) 16.14.08_2c11c633.jpg" alt="Roupa 14" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/Imagem do WhatsApp de 2025-08-11 à(s) 16.15.33_a427b5cd.jpg" alt="Roupa 15" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/Imagem do WhatsApp de 2025-08-11 à(s) 16.18.29_30dc2b43.jpg" alt="Roupa 16" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/Imagem do WhatsApp de 2025-08-11 à(s) 16.21.02_54298c4a.jpg" alt="Roupa 17" class="product-image">
+          </div>
+        </div>
+        
+        <h3 class="product-category-title">Calçados</h3>
+        <div class="products-grid">
+          <div class="product-card">
+            <img src="img/IMG-20250518-WA0005.jpg" alt="Calçado 1" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/IMG-20250518-WA0004.jpg" alt="Calçado 2" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/IMG-20250518-WA0003.jpg" alt="Calçado 3" class="product-image">
+          </div>
+          <div class="product-card">
+            <img src="img/IMG-20250518-WA0002.jpg" alt="Calçado 4" class="product-image">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Rodapé -->
+  <footer id="contact">
+    <div class="footer-content">
+      <div class="footer-column">
+        <h3>Delza Fashion Hair</h3>
+        <div class="social-links">
+          <a href="https://www.instagram.com/delzafashionhair" target="_blank">Instagram</a>
+          <a href="https://wa.me/+5571987427196" target="_blank">WhatsApp</a>
+        </div>
+      </div>
+      
+      <div class="footer-column">
+        <h3>Horário de Funcionamento</h3>
+        <p>Segunda a Sexta: 9h - 19h</p>
+        <p>Sábado: 9h - 15h</p>
+        <p>Domingo: Fechado</p>
+      </div>
+      
+      <div class="footer-column">
+        <h3>Contato</h3>
+        <a href="tel:+5571987427196">(71) 98742-7196</a>
+        <p>Endereço: Salvador, BA</p>
+      </div>
+    </div>
+    
+    <div class="copyright">
+      <p>&copy; 2025 Delza Fashion Hair. Todos os direitos reservados.</p>
+      <p>Desenvolvido por <a href="https://github.com/MURILO02007" target="_blank">Murillo Novaes</a></p>
+    </div>
+  </footer>
+  
+  <script>
+    // Menu Mobile
+    const menuToggle = document.getElementById('menuToggle');
+    const sideMenu = document.getElementById('sideMenu');
+    const overlay = document.getElementById('overlay');
+    const closeMenu = document.getElementById('closeMenu');
+    
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('active');
+      sideMenu.classList.toggle('active');
+      overlay.classList.toggle('active');
+    });
+    
+    closeMenu.addEventListener('click', () => {
+      menuToggle.classList.remove('active');
+      sideMenu.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+    
+    overlay.addEventListener('click', () => {
+      menuToggle.classList.remove('active');
+      sideMenu.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+    
+    // Fechar menu ao clicar em um link
+    const menuLinks = document.querySelectorAll('.side-menu a');
+    menuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        sideMenu.classList.remove('active');
+        overlay.classList.remove('active');
+      });
+    });
+    
+    // Scroll suave para links internos
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

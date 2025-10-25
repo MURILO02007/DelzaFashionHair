@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirmação de Agendamento</title>
+  <link rel="icon" href="img/Imagem do WhatsApp de 2025-05-07 à(s) 14.58.20_2e624ae2.jpg" type="image/png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+      color: #333;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #853d3e;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      transition: transform 0.3s;
+      object-fit: cover;
+      border: 2px solid #853d3e;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+      color: white;
+      background-color: #853d3e;
+      padding: 8px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .nav-link:hover {
+      background-color: #6c2526;
+    }
+
+    .nav-link img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .confirmation-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #853d3e;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+
+    h2 {
+      color: #853d3e;
+      margin: 25px 0 15px;
+      font-size: 1.5rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+
+    .confirmation-message {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: #2e7d32;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .detail-item {
+      margin-bottom: 15px;
+    }
+
+    .detail-label {
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .detail-value {
+      font-size: 1.1rem;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 25px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      text-align: center;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background-color: #853d3e;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #6c2526;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    .btn-secondary {
+      background-color: #f5f5f5;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+
+    .btn-secondary:hover {
+      background-color: #e0e0e0;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    .service-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .service-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .service-item:last-child {
+      border-bottom: none;
+    }
+
+    .total {
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-align: right;
+      margin-top: 20px;
+      color: #853d3e;
+    }
+
+    @media (max-width: 600px) {
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .actions {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img class="logo" src="img/Imagem do WhatsApp de 2025-05-07 à(s) 14.58.20_2e624ae2.jpg" alt="Logo Delza Fashion Hair">
+      <h2>Delza Fashion Hair</h2>
+    </div>
+    
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">
+        <img src="img/homeicon.png" alt="Home"> Início
+      </a>
+    </div>
+  </header>
+
+  <div class="confirmation-container">
+    <h1>Agendamento Confirmado!</h1>
+    <div class="confirmation-message">
+      Seu agendamento foi realizado com sucesso! Abaixo estão os detalhes:
+    </div>
+
+    <h2>Informações Pessoais</h2>
+    <div class="details-grid">
+      <div class="detail-item">
+        <span class="detail-label">Nome Completo:</span>
+        <span class="detail-value" id="nomeCliente"></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Telefone:</span>
+        <span class="detail-value" id="telefoneCliente"></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">E-mail:</span>
+        <span class="detail-value" id="emailCliente"></span>
+      </div>
+    </div>
+
+    <h2>Detalhes do Agendamento</h2>
+    <div class="details-grid">
+      <div class="detail-item">
+        <span class="detail-label">Data:</span>
+        <span class="detail-value" id="dataAgendamento"></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Horário:</span>
+        <span class="detail-value" id="horarioAgendamento"></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Serviço:</span>
+        <span class="detail-value" id="servicoAgendamento"></span>
+      </div>
+    </div>
+
+    <h2>Resumo</h2>
+    <ul class="service-list">
+      <li class="service-item">
+        <span id="resumoServico"></span>
+        <span id="precoServico"></span>
+      </li>
+    </ul>
+    <div class="total">
+      Total: <span id="valorTotal"></span>
+    </div>
+
+    <div class="actions">
+      <a href="index.html" class="btn btn-primary">Agendar Outro Serviço</a>
+      <a href="index.html" class="btn btn-secondary">Voltar ao Início</a>
+    </div>
+  </div>
+
+  <script>
+    // Função para obter parâmetros da URL de forma mais robusta
+    function getURLParameter(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    // Função para formatar data
+    function formatarData(dataString) {
+      if (!dataString) return "-";
+      const [dia, mes, ano] = dataString.split('/');
+      const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
+                    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+      return `${dia} de ${meses[parseInt(mes) - 1]} de ${ano}`;
+    }
+
+    // Função para exibir os dados na página
+    function exibirDadosAgendamento() {
+      // Obter parâmetros da URL
+      const servico = getURLParameter('servico');
+      const data = getURLParameter('data');
+      const horario = getURLParameter('horario');
+      const nome = getURLParameter('nome') || 'Não informado';
+      const telefone = getURLParameter('telefone') || 'Não informado';
+      const email = getURLParameter('email') || 'Não informado';
+
+      // Debug: Mostrar os valores capturados no console
+      console.log('Dados capturados:', {
+        servico, data, horario, nome, telefone, email
+      });
+
+      // Preencher os campos na página
+      document.getElementById('nomeCliente').textContent = nome;
+      document.getElementById('telefoneCliente').textContent = telefone;
+      document.getElementById('emailCliente').textContent = email;
+      document.getElementById('dataAgendamento').textContent = formatarData(data);
+      document.getElementById('horarioAgendamento').textContent = horario || '-';
+      document.getElementById('servicoAgendamento').textContent = servico || 'Serviço não especificado';
+      document.getElementById('resumoServico').textContent = servico || 'Serviço não especificado';
+      
+      // Simulação de preço (você pode substituir por valores reais)
+      const preco = calcularPrecoServico(servico);
+      document.getElementById('precoServico').textContent = `R$ ${preco.toFixed(2).replace('.', ',')}`;
+      document.getElementById('valorTotal').textContent = `R$ ${preco.toFixed(2).replace('.', ',')}`;
+    }
+
+    // Função para calcular preço baseado no serviço (exemplo)
+    function calcularPrecoServico(servico) {
+      const precos = {
+        'Botox Capilar': 150.00,
+        'Selante': 120.00,
+        'Progressiva': 180.00,
+        'Corte': 60.00,
+        'Unha, Pé e Mão': 80.00,
+        'Alisantes': 200.00,
+        'Luzes': 250.00,
+        'Escova': 50.00
+      };
+      return precos[servico] || 0;
+    }
+
+    // Executar quando a página carregar
+    window.onload = exibirDadosAgendamento;
+  </script>
+</body>
+</html>
